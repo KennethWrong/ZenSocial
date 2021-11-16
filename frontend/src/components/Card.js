@@ -1,14 +1,30 @@
-function Card(){
+import Avatar from './Avatar'
+
+function Card(props){
+    const post = props.post
+    let title = post.title
+    let content = post.content
+    let picture_id = post.picture_id
+    if(title.length > 70){
+        title = title.slice(0,70) + '...'
+    }
+    if(content.length > 200){
+        content = content.slice(0,200) + '...'
+    }
     return(
-        <div class="card lg:card-side bordered">
-            <div class="card-body">
-                <h2 class="card-title">No Images</h2> 
-                <p>Rerum reiciendis beatae tenetur excepturi aut pariatur est eos. Sit sit necessitatibus veritatis sed molestiae voluptates incidunt iure sapiente.</p> 
-                <div class="card-actions">
-                <button class="btn btn-primary">Get Started</button> 
-                <button class="btn btn-ghost">More info</button>
+        <div className="card lg:card-side bordered cursor-pointer hover:bg-gray-300">
+            <Avatar post={post}  />
+            <div className="card-body">
+                <h2 className="card-title text-3xl">{title}</h2> 
+                <p className=" max-w-3xl text-xl text-gray-500">{content}</p> 
+                <div className="card-actions">
+                <button className="btn btn-primary">Read more</button> 
+                <button className="btn btn-warning btn-outline">Updoot</button>
+                <div class="badge badge-lg badge-neutral">{post.upvotes}</div> 
                 </div>
             </div>
         </div>
     )
 }
+
+export default Card;

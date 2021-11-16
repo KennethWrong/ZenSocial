@@ -1,5 +1,6 @@
-import react, {useState} from 'react'
+import {useState} from 'react'
 import axios from 'axios'
+import {Link, useHistory} from 'react-router-dom'
 
 function Login(){
     const [greetingsH1, setGreetingH1] = useState('Welcome to ZenSocial')
@@ -10,6 +11,7 @@ function Login(){
     const [pColor, setPcolor] = useState('text-indigo-600')
     const [buttonColors, setButtonColors] = useState(['btn-primary','btn-info'])
     const [username, setUsername] = useState('')
+    const history = useHistory()
     const [password, setPassword] = useState('')
 
     const change_theme = (e) => {
@@ -55,36 +57,39 @@ function Login(){
             }
 
             const res = await axios.post('http://localhost:5000/register', obj)
-            console.log(res.status)
+            console.log(res)
+            if(res.status == '200'){
+                history.push(`/feed/${123}`)
+            }
         }
     }
 
 
     return(
-        <div class="hero min-h-screen bg-base-200 text-3xl">
-        <div class="flex-col justify-center hero-content lg:flex-row">
-            <div class="text-center lg:text-left">
-            <h1 class={`mb-5 text-9xl font-bold ${h1Color}`}>
+        <div className="hero min-h-screen bg-base-200 text-3xl">
+        <div className="flex-col justify-center hero-content lg:flex-row">
+            <div className="text-center lg:text-left">
+            <h1 className={`mb-5 text-9xl font-bold ${h1Color}`}>
                     {greetingsH1}
                 </h1> 
-            <p class={`mb-5 leading-relaxed ${pColor}`}>
+            <p className={`mb-5 leading-relaxed ${pColor}`}>
                     {greetingsP}
                 </p>
             </div> 
-            <div class="card flex-shrink-0 w-full max-w-md shadow-2xl bg-base-100">
-            <div class="card-body">
-                <div class="form-control">
+            <div className="card flex-shrink-0 w-full max-w-md shadow-2xl bg-base-100">
+            <div className="card-body">
+                <div className="form-control">
                 <input type="text" placeholder="Username" value={username} onChange={(e)=>setUsername(e.target.value)}
-                class="input h-15 input-bordered input-info text-2xl mb-4" />
+                className="input h-15 input-bordered input-info text-2xl mb-4" />
                 </div> 
-                <div class="form-control">
+                <div className="form-control">
                 <input type="password" placeholder="password" value={password} onChange={(e)=>setPassword(e.target.value)}
-                class="input h-15 text-2xl input-info input-bordered" /> 
+                className="input h-15 text-2xl input-info input-bordered" /> 
                 </div> 
-                <div class="form-control mt-6">
-                <input type="button" value={button1Text} class={`btn ${buttonColors[0]}`} onClick={send_info_request}/>
+                <div className="form-control mt-6">
+                <input type="button" value={button1Text} className={`btn ${buttonColors[0]}`} onClick={send_info_request}/>
                 </div>
-                <button class={`btn btn-outline ${buttonColors[1]} mt-4`} onClick={change_theme}>{button2Text}</button> 
+                <button className={`btn btn-outline ${buttonColors[1]} mt-4`} onClick={change_theme}>{button2Text}</button> 
             </div>
             </div>
         </div>
