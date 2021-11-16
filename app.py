@@ -11,12 +11,6 @@ CORS(app)  # comment this on deployment
 # def home():
 #     return send_from_directory(app.static_folder,'index.html')
 
-
-@app.route('/')
-def home():
-    return 'Hello there.'
-
-
 @app.route('/register', methods=['POST'])
 def register():
 
@@ -39,6 +33,9 @@ def register():
 
     return json.dumps({'success': True}), 200, {'ContentType': 'application/json'}
 
+@app.route('/')
+def home():
+    return 'Hello there.'
 
 if __name__ == '__main__':
     app.run(debug=True)
