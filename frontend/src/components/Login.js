@@ -1,6 +1,7 @@
 import {useState} from 'react'
 import axios from 'axios'
-import {Link, useHistory} from 'react-router-dom'
+import {useHistory} from 'react-router-dom'
+import ErrorMessage from './ErrorMessage'
 
 function Login(){
     const [greetingsH1, setGreetingH1] = useState('Welcome to ZenSocial')
@@ -13,6 +14,8 @@ function Login(){
     const [username, setUsername] = useState('')
     const history = useHistory()
     const [password, setPassword] = useState('')
+    const [errorMessage, setErrorMessage] = useState('')
+    const [error, setError] = useState(false)
 
     const change_theme = (e) => {
         e.preventDefault()
@@ -42,26 +45,78 @@ function Login(){
         setH1color(hc);
         setPcolor(pc);
         setButtonColors(buttonCols);
+        setUsername('')
+        setPassword('')
+    }
+
+    const CreateErrorMessage = (message) => {
+        setErrorMessage(message)
+        setError(true)
+        setTimeout(()=>{
+            setError(false)
+        },1500)
     }
 
     const send_info_request = async () => {
         if (button1Text === 'Login'){
-            //send login request
+            //send LOGIN request
+            let obj = {
+                username: username,
+                password: password,
+            }
+            try{
+                const res = await axios.post('http://localhost:5000/login', obj)
+                let user_id = res['data']
+                history.push(`/feed/${user_id}`)
+            } catch(e){
+                console.log(e)
+                CreateErrorMessage(e.response['data'])
+                return
+            }
         }
         else{
-            //send register request
+        //send REGISTER request
             let obj = {
                 username: username,
                 password: password,
                 picture_id: '0',
             }
-
-            const res = await axios.post('http://localhost:5000/register', obj)
-            console.log(res)
-            if(res.status == '200'){
-                history.push(`/feed/${123}`)
+            try{
+                const res = await axios.post('http://localhost:5000/register', obj)
+                let user_id = res['data']
+                history.push(`/feed/${user_id}`)
+            }catch(e){
+                CreateErrorMessage(e.response['data'])
+                return
             }
+
         }
+    }
+
+    const selectAvatar = () => {
+        if(button1Text === 'Register'){
+            return(
+                <div>
+                    <label htmlFor="my-modal-2" className="btn btn-primary modal-button mb-0 mt-3">Choose avatar</label> 
+                    <input type="checkbox" id="my-modal-2" className="modal-toggle" /> 
+                    <div className="modal">
+                    <div className="modal-box">
+                        <div className="grid grid-cols-4">
+                            <img src="https://www.dictionary.com/e/wp-content/uploads/2019/11/coomer-2-150x150.png" className=" cursor-pointer max-w-xs max-h-16" onClick={()=>console.log('lmao')}/>
+                            <img src="http://daisyui.com/tailwind-css-component-profile-5@56w.png"/>
+                            <img src="http://daisyui.com/tailwind-css-component-profile-5@56w.png"/>
+                            <img src="http://daisyui.com/tailwind-css-component-profile-5@56w.png"/>
+                        </div>
+                        <div class="modal-action">
+                        <label htmlFor="my-modal-2" className="btn btn-primary">Accept</label> 
+                        <label htmlFor="my-modal-2" className="btn">Close</label>
+                        </div>
+                    </div>
+                    </div>     
+                </div>      
+            )
+        }
+        return <div></div>
     }
 
 
@@ -78,6 +133,7 @@ function Login(){
             </div> 
             <div className="card flex-shrink-0 w-full max-w-md shadow-2xl bg-base-100">
             <div className="card-body">
+                {error? <ErrorMessage message={errorMessage}/>: <div></div>}
                 <div className="form-control">
                 <input type="text" placeholder="Username" value={username} onChange={(e)=>setUsername(e.target.value)}
                 className="input h-15 input-bordered input-info text-2xl mb-4" />
@@ -85,6 +141,7 @@ function Login(){
                 <div className="form-control">
                 <input type="password" placeholder="password" value={password} onChange={(e)=>setPassword(e.target.value)}
                 className="input h-15 text-2xl input-info input-bordered" /> 
+                {selectAvatar()}
                 </div> 
                 <div className="form-control mt-6">
                 <input type="button" value={button1Text} className={`btn ${buttonColors[0]}`} onClick={send_info_request}/>

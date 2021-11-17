@@ -13,14 +13,14 @@ function Card(props){
     }
     return(
         <div className="card lg:card-side bordered cursor-pointer hover:bg-gray-300">
-            <Avatar post={post}  />
+            <Avatar picture_id={picture_id}  />
             <div className="card-body">
                 <h2 className="card-title text-3xl">{title}</h2> 
                 <p className=" max-w-3xl text-xl text-gray-500">{content}</p> 
                 <div className="card-actions">
                 <button className="btn btn-primary">Read more</button> 
                 <button className="btn btn-warning btn-outline">Updoot</button>
-                <div class="badge badge-lg badge-neutral">{post.upvotes}</div> 
+                <div className="badge badge-lg badge-neutral">{post.upvotes}</div> 
                 </div>
             </div>
         </div>

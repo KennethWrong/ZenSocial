@@ -11,18 +11,9 @@ function Navbar(){
   </div> 
   <div className="flex-none hidden px-2 mx-2 lg:flex">
     <div className="flex items-stretch">
-      <a className="btn btn-ghost btn-sm rounded-btn" href='#'>Likes</a> 
-      <a className="btn btn-ghost btn-sm rounded-btn" href='#'>
-              Notifications
-            
-      </a> 
-      <a className="btn btn-ghost btn-sm rounded-btn" href='#'>
-              Files
-            
-      </a> 
-      <a className="btn btn-ghost btn-sm rounded-btn" href='#'>
-              Config 
-      </a>
+      <Link to='/' className="btn btn-ghost btn-sm rounded-btn">Likes</Link>
+      <Link to="/" className="btn btn-ghost btn-sm rounded-btn"> Notifications </Link> 
+      <Link to="/" className="btn btn-ghost btn-sm rounded-btn"> Files </Link> 
     </div>
   </div> 
   <div className="flex-none">

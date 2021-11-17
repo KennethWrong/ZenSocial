@@ -35,7 +35,7 @@ function Feed(){
         <div>
             <div className='ml-20 mt-10'>
                 {dummyData.map((post) => (
-                    <Card post={post}></Card>
+                    <Card post={post} key={post.id}></Card>
                 ))}
             </div>  
             <Pagination></Pagination>
