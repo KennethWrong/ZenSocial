@@ -5,5 +5,5 @@
 ## To run flask back-end 
 - click start on vs code
 
-##To run react front-end
+## To run react front-end
 - `npm run start`
