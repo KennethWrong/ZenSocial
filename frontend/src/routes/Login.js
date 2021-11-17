@@ -1,7 +1,8 @@
 import {useState} from 'react'
 import axios from 'axios'
 import {useHistory} from 'react-router-dom'
-import ErrorMessage from './ErrorMessage'
+import ErrorMessage from '../components/ErrorMessage'
+import SelectAvatar from '../components/SelectAvatar'
 
 function Login(){
     const [greetingsH1, setGreetingH1] = useState('Welcome to ZenSocial')
@@ -16,6 +17,7 @@ function Login(){
     const [password, setPassword] = useState('')
     const [errorMessage, setErrorMessage] = useState('')
     const [error, setError] = useState(false)
+    const [pictureId, setPictureId] = useState(0)
 
     const change_theme = (e) => {
         e.preventDefault()
@@ -92,28 +94,18 @@ function Login(){
 
         }
     }
+    //For selection of avatar
+    const handleClickEvent = (pid) => {
+        setPictureId(pid)
+    }
 
     const selectAvatar = () => {
         if(button1Text === 'Register'){
             return(
                 <div>
-                    <label htmlFor="my-modal-2" className="btn btn-primary modal-button mb-0 mt-3">Choose avatar</label> 
-                    <input type="checkbox" id="my-modal-2" className="modal-toggle" /> 
-                    <div className="modal">
-                    <div className="modal-box">
-                        <div className="grid grid-cols-4">
-                            <img src="https://www.dictionary.com/e/wp-content/uploads/2019/11/coomer-2-150x150.png" className=" cursor-pointer max-w-xs max-h-16" onClick={()=>console.log('lmao')}/>
-                            <img src="http://daisyui.com/tailwind-css-component-profile-5@56w.png"/>
-                            <img src="http://daisyui.com/tailwind-css-component-profile-5@56w.png"/>
-                            <img src="http://daisyui.com/tailwind-css-component-profile-5@56w.png"/>
-                        </div>
-                        <div class="modal-action">
-                        <label htmlFor="my-modal-2" className="btn btn-primary">Accept</label> 
-                        <label htmlFor="my-modal-2" className="btn">Close</label>
-                        </div>
-                    </div>
-                    </div>     
-                </div>      
+                <SelectAvatar handleClickEvent={handleClickEvent}/> 
+                <img src={`http://localhost:5000/assets/picture/allpicture/${pictureId}`} className={` cursor-pointer max-w-xs max-h-20`} />
+                </div>  
             )
         }
         return <div></div>

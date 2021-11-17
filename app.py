@@ -1,6 +1,6 @@
 import sqlite3
 import uuid
-from flask import Flask, request, json, jsonify, send_from_directory, make_response
+from flask import Flask, request, json, jsonify, send_from_directory, send_file
 from flask_cors import CORS  # comment this on deployment
 import api_helper
 
@@ -26,7 +26,6 @@ def register():
     elif len(username.strip()) < 3 or len(password.strip()) < 3:
         response = api_helper.create_response('Username or password must have at least 3 characters',400)
         return response
-
 
 
     user_id = str(uuid.uuid4())
@@ -89,6 +88,32 @@ def login():
         response = api_helper.create_response('Username or password is incorrect',400)
         return response
 
+@app.route('/feed/<int:id>',methods=['GET'])
+def send_feed(id):
+
+    conn = sqlite3.connect('data/database.db')
+    print("Opened database successfully")
+    cur = conn.cursor()
+    cur.execute("SELECT * FROM posts")
+    res = cur.fetchall()
+    conn.close()
+    response = api_helper.create_response(res,200)
+    return response
+
+@app.route('/assets/picture/allpicture/<number>', methods=["GET"])
+def get_specific_pictures(number):
+    return send_file(f"./assets/{number}.png", mimetype='image')
+
+
+@app.route('/assets/picture/<user_id>', methods=['GET'])
+def get_user_picture_by_user_id(user_id):
+    picture_id = api_helper.get_picture_from_user_id(user_id)
+    return send_file(f"./assets/{picture_id}.png", mimetype='image')
+
+@app.route('/users/<user_id>', methods=["GET"])
+def get_user_info_by_user_id(user_id):
+    user_info = api_helper.get_user_info_by_user_id(user_id)
+    return api_helper.create_response(user_info[0],200)
 
 if __name__ == '__main__':
     app.run(debug=True)
