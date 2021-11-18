@@ -88,17 +88,23 @@ def login():
         response = api_helper.create_response('Username or password is incorrect',400)
         return response
 
-@app.route('/feed/<int:id>',methods=['GET'])
-def send_feed(id):
-
-    conn = sqlite3.connect('data/database.db')
-    print("Opened database successfully")
-    cur = conn.cursor()
-    cur.execute("SELECT * FROM posts")
-    res = cur.fetchall()
-    conn.close()
+@app.route('/feed/<int:page>',methods=['GET'])
+def send_feed(page):
+    res = api_helper.get_limited_posts_for_feed(page)
     response = api_helper.create_response(res,200)
     return response
+
+@app.route('/post/create_post', methods=["POST"])
+def create_new_post():
+    contents = request.json
+    title = contents['title']
+    content = contents['content']
+    user_id = contents['user_id']
+
+    res = api_helper.insert_new_post(title,content,user_id)
+    response = api_helper.make_response()
+    return 'good stuff'
+
 
 @app.route('/assets/picture/allpicture/<number>', methods=["GET"])
 def get_specific_pictures(number):

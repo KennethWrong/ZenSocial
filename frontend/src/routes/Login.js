@@ -71,7 +71,6 @@ function Login(){
                 let user_id = res['data']
                 history.push(`/feed/${user_id}`)
             } catch(e){
-                console.log(e)
                 CreateErrorMessage(e.response['data'])
                 return
             }
@@ -99,7 +98,7 @@ function Login(){
         setPictureId(pid)
     }
 
-    const selectAvatar = () => {
+    const selectAvatar = () => { 
         if(button1Text === 'Register'){
             return(
                 <div>

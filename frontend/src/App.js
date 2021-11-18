@@ -3,6 +3,7 @@ import Login from './routes/Login'
 import Feed from './routes/Feed'
 import NavbarAfterLogin from './components/NavbarAfterLogin'
 import {BrowserRouter as Router, Route, Switch} from 'react-router-dom'
+import CreatePost from './routes/CreatePost'
 
 function App() {
   return (
@@ -13,6 +14,9 @@ function App() {
             <Route path="/feed/:username">
               <NavbarAfterLogin />
               <Feed />
+            </Route>
+            <Route path='/create/:username'>
+              <CreatePost />
             </Route>
             <Route path="/">
               <Navbar />

@@ -2,13 +2,14 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import {useParams}from "react-router-dom"
+import {useParams, useHistory}from "react-router-dom"
 
 
 function NavbarAfterLogin(){
     const [username, setUsername] = useState('')
     let user_id = useParams();
     user_id = user_id.username
+    const history = useHistory()
 
     useEffect(() => {
         axios.get(`http://localhost:5000/users/${user_id}`)
@@ -16,6 +17,15 @@ function NavbarAfterLogin(){
             setUsername(res.data)
         })
     },[username])
+
+
+    const redirectToCreate = () => {
+        history.push(`/create/${user_id}`)
+    }
+
+    const redirectToFeed = () => {
+        history.push(`/feed/${user_id}`)
+    }
 
     return(
     <div className="navbar mb-2 shadow-lg bg-blue-400 text-neutral-content rounded-box">
@@ -26,7 +36,16 @@ function NavbarAfterLogin(){
             </span>
         </div> 
         <div className="flex-none">
-            <button className="btn btn-ghost">
+            <button className="btn btn-ghost" onClick={redirectToCreate}>
+                <div className="items-center mt-1">
+                    <span className="text-lg items-center">
+                        Create
+                    </span>
+                </div>
+            </button>
+         </div>
+         <div className="flex-none">
+            <button className="btn btn-ghost" onClick={redirectToFeed}>
                 <div className="avatar flex-row items-center">
                     <span className="text-lg">
                         {username}

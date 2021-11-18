@@ -5,6 +5,30 @@ function Card(props){
     let title = post.title
     let content = post.content
     let user_id = post.user_id
+    let date = post.date
+    date = new Date(date);
+
+    let current_date = new Date()
+
+    if (current_date < date) {
+        current_date.setDate(current_date.getDate() + 1);
+    }
+    
+    var diff = current_date - date;
+    
+    var msec = diff;
+    var hh = Math.floor(msec / 1000 / 60 / 60);
+    msec -= hh * 1000 * 60 * 60;
+    var mm = Math.floor(msec / 1000 / 60);  
+    msec -= mm * 1000 * 60;
+    var ss = Math.floor(msec / 1000);
+    msec -= ss * 1000;
+
+    var diff2 =(current_date.getTime() - date.getTime()) / 1000;
+    diff2 /= (60 * 60 * 24);
+    let years = Math.abs(Math.round(diff2/365.25));
+    {console.log(years)}
+    {console.log(hh)}
 
     if(title && title.length > 70){
         title = title.slice(0,70) + '...'
@@ -23,7 +47,9 @@ function Card(props){
                 <button className="btn btn-warning btn-outline">Updoot</button>
                 <div className="badge badge-lg badge-neutral">{post.upvotes}</div> 
                 </div>
+                {date.toString()}
             </div>
+            
         </div>
     )
 }
