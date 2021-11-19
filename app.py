@@ -96,6 +96,8 @@ def send_feed(page):
     response = api_helper.create_response(res,200)
     return response
 
+
+
 @app.route('/post/create_post', methods=["POST"])
 def create_new_post():
     contents = request.json

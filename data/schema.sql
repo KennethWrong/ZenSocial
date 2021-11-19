@@ -14,10 +14,17 @@ CREATE TABLE posts(
     post_title TEXT NOT NULL,
     post_content TEXT NOT NULL,
     upvotes INTEGER,
+    downvotes INTEGER,
     date TEXT, --TEXT as ISO8601 strings ("YYYY-MM-DD HH:MM:SS.SSS")
     user_id TEXT,
     FOREIGN KEY (user_id) REFERENCES users (user_id)
 );
+
+CREATE TRIGGER aft_del AFTER DELETE ON users
+BEGIN
+    DELETE FROM posts
+    WHERE user_id = old.user_id
+END;
 
 INSERT INTO users (username, password, user_id, picture_id) 
 VALUES 

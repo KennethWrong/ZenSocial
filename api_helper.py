@@ -81,6 +81,15 @@ def get_limited_posts_for_feed(id):
     conn.close()
     return res
 
+def get_limited_posts_for_profile(id, user_id):
+    conn = sqlite3.connect('data/database.db')
+    offset = 5*(int(id) - 1)
+    cur = conn.cursor()
+    cur.execute(f"SELECT * FROM posts WHERE user_id=? ORDER BY post_id DESC LIMIT 5 OFFSET {offset}", (user_id))
+    res = cur.fetchall()
+    conn.close()
+    return res
+
 def insert_new_post(title,content,user_id):
     conn = sqlite3.connect('data/database.db')
     print(title,content,user_id)
@@ -114,3 +123,12 @@ def generate_dict_for_user(res):
         'picture_id':res[3]
         }   
     return obj
+
+def delete_user(user_id):
+    conn = sqlite3.connect('data/database.db')
+    cur = conn.cursor()
+    cur.execute(f"SELECT * FROM users WHERE user_id=?", (user_id))
+    res = cur.fetchall()
+    cur.execute(f"DELETE FROM users WHERE user_id=?", (user_id))
+    conn.close()
+    return res
