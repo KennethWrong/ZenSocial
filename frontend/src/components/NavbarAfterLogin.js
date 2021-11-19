@@ -8,13 +8,13 @@ import {useParams, useHistory}from "react-router-dom"
 function NavbarAfterLogin(){
     const [username, setUsername] = useState('')
     let user_id = useParams();
-    user_id = user_id.username
+    user_id = user_id['user_id']
     const history = useHistory()
 
     useEffect(() => {
         axios.get(`http://localhost:5000/users/${user_id}`)
         .then(res => {
-            setUsername(res.data)
+            setUsername(res.data['username'])
         })
     },[username])
 
@@ -28,11 +28,11 @@ function NavbarAfterLogin(){
     }
 
     return(
-    <div className="navbar mb-2 shadow-lg bg-blue-400 text-neutral-content rounded-box">
+    <div className="navbar mb-2 shadow-lg bg-blue-400 text-neutral-content rounded-box sticky top-0 z-50">
  
         <div className="flex-1 px-2 mx-2">
-            <span className="font-bold text-3xl">
-                <Link to="/" className="hover:text-indigo-500">ZenSocial </Link>
+            <span className="font-bold text-2xl">
+                <h1 className= "cursor-pointer hover:bg-gray-800 p-2  rounded-box hover:bg-opacity-25" onClick={redirectToFeed}>ZenSocial </h1>
             </span>
         </div> 
         <div className="flex-none">

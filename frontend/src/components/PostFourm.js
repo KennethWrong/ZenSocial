@@ -2,13 +2,16 @@ import axios from "axios";
 import { useState } from "react";
 import SuccessMessage from './SuccessMessage'
 import ErrorMessage from "./ErrorMessage";
+import { useHistory } from "react-router";
 function PostFourm(props){
     const [loading, setLoading] = useState(false)
     const [title, setTitle] = useState('')
     const [content, setContent] = useState('')
     const [message, setMessage] = useState('')
     const [errorMessage, setErrorMessage] = useState('')
-    const user_id = props.user_id['username']
+    const user_id = props.user_id['user_id']
+
+    const history = useHistory()
     const handleClick = async(e) => {
         e.preventDefault()
         try{
@@ -18,8 +21,7 @@ function PostFourm(props){
                 user_id:user_id,
             }
             let res = await axios.post('http://localhost:5000/post/create_post',obj)
-            console.log(res)
-
+            let page = res['data']
             setLoading(true)
             setTimeout(()=>{
                 setLoading(false)
@@ -30,7 +32,8 @@ function PostFourm(props){
     
             setTimeout(()=>{
                 setMessage('')
-            },3000)
+                history.push(`/${user_id}/posts/${page}`)
+            },2000)
         }
         catch{
             setLoading(true)

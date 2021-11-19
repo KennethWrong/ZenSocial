@@ -6,9 +6,9 @@ function Pagination(props){
 
     return(
 
-    <div className="btn-group ml-20">
-        <button className="btn btn-outline btn-wide" onClick={()=>handlePageClick(0)}>Previous Page</button> 
-        <button className={`btn btn-outline btn-wide ${props.max?'disabled':''}`} onClick={()=>handlePageClick(1)}>Next Page</button>
+    <div className="btn-group ml-20 mt-12 mb-12">
+        <button className="btn btn-outline btn-wide" disabled={props.min?'disabled':''} onClick={()=>handlePageClick(0)}>Previous Page</button> 
+        <button className={`btn btn-outline btn-wide`} disabled={props.max?'disabled':''} onClick={()=>handlePageClick(1)}>Next Page</button>
     </div>
     )
 }

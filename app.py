@@ -1,6 +1,7 @@
 import sqlite3
 import uuid
 from flask import Flask, request, json, jsonify, send_from_directory, send_file
+from flask.helpers import make_response
 from flask_cors import CORS  # comment this on deployment
 import api_helper
 
@@ -30,6 +31,7 @@ def register():
 
     user_id = str(uuid.uuid4())
     picture_id = content['picture_id']
+    print(picture_id)
 
     conn = sqlite3.connect('data/database.db')
     cur = conn.cursor()
@@ -102,9 +104,17 @@ def create_new_post():
     user_id = contents['user_id']
 
     res = api_helper.insert_new_post(title,content,user_id)
-    response = api_helper.make_response()
-    return 'good stuff'
+    response = api_helper.create_response(res)
+    return response
 
+@app.route('/post/<post_id>', methods=['GET'])
+def get_post_by_id(post_id):
+    post = api_helper.get_post_and_user_from_post_id(post_id)
+    print(post)
+    response = make_response(post)
+    response.status_code = 200
+    response.mimetype = 'application/json'
+    return response
 
 @app.route('/assets/picture/allpicture/<number>', methods=["GET"])
 def get_specific_pictures(number):
@@ -119,7 +129,7 @@ def get_user_picture_by_user_id(user_id):
 @app.route('/users/<user_id>', methods=["GET"])
 def get_user_info_by_user_id(user_id):
     user_info = api_helper.get_user_info_by_user_id(user_id)
-    return api_helper.create_response(user_info[0],200)
+    return api_helper.create_response(user_info,200)
 
 if __name__ == '__main__':
     app.run(debug=True)

@@ -80,7 +80,7 @@ function Login(){
             let obj = {
                 username: username,
                 password: password,
-                picture_id: '0',
+                picture_id: pictureId,
             }
             try{
                 const res = await axios.post('http://localhost:5000/register', obj)
@@ -95,6 +95,7 @@ function Login(){
     }
     //For selection of avatar
     const handleClickEvent = (pid) => {
+        console.log(pid)
         setPictureId(pid)
     }
 

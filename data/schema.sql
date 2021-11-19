@@ -32,34 +32,34 @@ INSERT INTO posts (post_title, post_content, upvotes, date, user_id) VALUES
         "As you get older, what's something that becomes increasingly annoying?",
         " ",
         5,
-        '2011-11-15 13:20:20.123',
+        '2011-11-15T13:20:20.123Z',
         '12345678-1234-5678-1234-567812345678'
     ),
     (
         'First Post',
         'This is the conent of the first post',
         44,
-        '2001-10-15 12:20:20.123',
+        '2001-10-15T12:20:20.123Z',
         '12345678-1234-5678-1234-567812345333'
     ),
     (
         'A female Gorilla at the Taipei Zoo, trying to figure out an escape plan using a log as a stepping stone',
         'Yes. Sad was the first emotion I felt as well. Thank goodness other people are starting to see, as this being the top rated comment.',
         1048,
-        '2019-11-15 19:20:20.123',
+        '2019-11-15T19:20:20.123Z',
         '12345432428-1234-5678-1234-567812345333'
     ),
     (
         'First Post',
         'Yes. Sad was the first emotion I felt as well. Thank goodness other people are starting to see, as this being the top rated comment.',
         1048,
-        '2019-11-15 19:20:20.123',
+        '2019-11-15T19:20:20.123Z',
         '12345432428-1234-5678-1234-567812345333'
     ),    (
         'TIFU by showing my girlfriend my actual strength',
         'So, when my then gf and I started dating, I discovered early on that she can be quite physical. In the sense that she likes to push, hold, punch even. Bare in mind she is not actually trying to hurt me, she is just playful like that. I found this both adorable and fun, so I played along.',
         1048,
-        '2019-11-15 19:20:20.123',
+        '2019-11-15T19:20:20.123Z',
         '12345432428-1234-5678-1234-567812345333'
     )
 ;

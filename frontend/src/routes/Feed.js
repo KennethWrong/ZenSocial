@@ -8,6 +8,7 @@ function Feed(){
     const [page, setPage] = useState(1)
     const [data, setData] = useState([])
     const [max, setMax] = useState(false)
+    const [min, setMin] = useState(true)
 
 
     useEffect(() => {
@@ -18,7 +19,7 @@ function Feed(){
                 setData(json_list)
                 setMax(true)
             }
-            else if(json_list.length == 5){
+            else if(json_list.length === 5){
                 setData(json_list)
                 if(max){
                     setMax(false)
@@ -30,13 +31,19 @@ function Feed(){
     },[page])
 
     const handlePageChange = (val) => {
-        if(val == 0){
+        if(val === 0){
             if(page > 1){
                 setPage(page - 1)
+                if(page-1 === 1){
+                    setMin(true)
+                }
+            }else{
+                setMin(true)
             }
         }else{
             if(!max){
                 setPage(page + 1)
+                setMin(false)
             }
         }
     }
@@ -49,7 +56,7 @@ function Feed(){
                     <Card post={post} key={post.id}></Card>
                 ))}
             </div>  
-            <Pagination handlePageChange={handlePageChange} max={max}></Pagination>
+            <Pagination handlePageChange={handlePageChange} min={min} max={max}></Pagination>
         </div>
     )
 }
