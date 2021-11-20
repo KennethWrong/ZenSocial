@@ -13,13 +13,17 @@ CORS(app)  # comment this on deployment
 # def home():
 #     return send_from_directory(app.static_folder,'index.html')
 
+#For users to register
 @app.route('/register', methods=['POST'])
 def register():
 
     content = request.json
 
+    #User params to enter
     username = content['username']
     password = content['password']
+    picture_id = content['picture_id']
+    user_id = str(uuid.uuid4())
 
     if len(username) == 0 or len(password) == 0:
         response = api_helper.create_response('Username or password can not be empty',400)
@@ -29,15 +33,10 @@ def register():
         return response
 
 
-    user_id = str(uuid.uuid4())
-    picture_id = content['picture_id']
-    print(picture_id)
-
     conn = sqlite3.connect('data/database.db')
     cur = conn.cursor()
-    print("Opened database successfully")
 
-    #check if data is duplicated or not
+    #check if username is duplicated or not
     cur.execute("SELECT * FROM users WHERE username=?",(username,))
     res = cur.fetchall()
 
@@ -45,44 +44,49 @@ def register():
         response = api_helper.create_response('Username already exists',400)
         return response
 
+    #Inserting new user after checking username is unique
     conn.execute("INSERT INTO users (username, password, user_id, picture_id) VALUES (?,?,?,?)",
                  (username, password, user_id, picture_id))
     conn.commit()
-    print("Operation done successfully")
     conn.close()
 
+    #api_helper is python helper file i created to modulate logic 
     response = api_helper.create_response(user_id)
 
     return response
 
+#API to handle uesr login
 @app.route('/login', methods=['POST'])
 def login():
 
+    #Parse user information
     content = request.json
-
     username = content['username']
     password = content['password']
 
+    #Check if given user information is invalid
     if len(username) == 0 or len(password) == 0:
         response = api_helper.create_response('Username or password can not be empty',400)
         return response
 
+    #Fetch user details from given username to check if password is correct
     conn = sqlite3.connect('data/database.db')
-    print("Opened database successfully")
     cur = conn.cursor()
-
     cur.execute("SELECT * FROM users WHERE username=?", (username,))
     res = cur.fetchall()
     conn.close()
 
+    #If no match, return 404
     if len(res) == 0:
         response = api_helper.create_response('Username does not exist',400)
         return response
     
+    #Parse retrieved user_info from database if username exists
     user_info = res[0]
     user_password = user_info[1]
     user_id = user_info[2]
 
+    #Check if password equals
     if user_password == password:
         response = api_helper.create_response(user_id)
         return response
@@ -90,6 +94,7 @@ def login():
         response = api_helper.create_response('Username or password is incorrect',400)
         return response
 
+#API to get feed 
 @app.route('/feed/<int:page>',methods=['GET'])
 def send_feed(page):
     res = api_helper.get_limited_posts_for_feed(page)

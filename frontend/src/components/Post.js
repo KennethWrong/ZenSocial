@@ -24,6 +24,7 @@ function Post(props){
                     'post_id':content['post_id'],
                     'title':content['title'],
                     'upvotes':content['upvotes'],
+                    'downvotes':content['downvotes'],
                     'user_id':content['user_id']
                 })
                 setUser({
@@ -39,7 +40,6 @@ function Post(props){
     return(
         <div className="flex items-center w-full px-4 py-10 bg-cover card bg-base-200 min-h-screen" style={{backgroundImage:"url(&quot;https://picsum.photos/id/314/1000/300&quot)"}}>
             <button className="btn bg-blue-400 border-blue-700 mt-4 hover:bg-blue-800 self-start mb-9 ml-3" onClick={()=> history.push(`/feed/${props.user_id}`)}>return</button>
-            
             <div className="card glass lg:card-side text-gray-800 min-h-full min-w-full">
                 <div className="p-6 flex-col">
                     <Avatar user_id={user.user_id} size={'w-20 h-20'}/>

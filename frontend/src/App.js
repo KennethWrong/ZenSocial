@@ -6,6 +6,7 @@ import {BrowserRouter as Router, Route, Switch} from 'react-router-dom'
 import CreatePost from './routes/CreatePost'
 import ViewPost from './routes/ViewPost'
 import Footer from './components/Footer'
+import Profile from './routes/Profile'
 
 function App() {
   return (
@@ -22,6 +23,10 @@ function App() {
             </Route>
             <Route path='/create/:user_id'>
               <CreatePost />
+            </Route>
+            <Route path='/profile/:user_id'>
+              <NavbarAfterLogin />
+              <Profile />
             </Route>
             <Route path="/">
               <Navbar />

@@ -27,14 +27,31 @@ function NavbarAfterLogin(){
         history.push(`/feed/${user_id}`)
     }
 
+    const redirectToLogin = () => {
+        history.push(`/`)
+    }
+
+    const redirectToProfile = () => {
+        history.push(`/profile/${user_id}`)
+    }
+
     return(
     <div className="navbar mb-2 shadow-lg bg-blue-400 text-neutral-content rounded-box sticky top-0 z-50">
  
         <div className="flex-1 px-2 mx-2">
             <span className="font-bold text-2xl">
-                <h1 className= "cursor-pointer hover:bg-gray-800 p-2  rounded-box hover:bg-opacity-25" onClick={redirectToFeed}>ZenSocial </h1>
+                <h1 className= "cursor-pointer hover:bg-gray-800 p-2  rounded-box hover:bg-opacity-25" onClick={redirectToLogin}>ZenSocial </h1>
             </span>
         </div> 
+        <div className="flex-none">
+            <button className="btn btn-ghost" onClick={redirectToFeed}>
+                <div className="items-center mt-1">
+                    <span className="text-lg items-center">
+                        Home
+                    </span>
+                </div>
+            </button>
+         </div>
         <div className="flex-none">
             <button className="btn btn-ghost" onClick={redirectToCreate}>
                 <div className="items-center mt-1">
@@ -45,7 +62,7 @@ function NavbarAfterLogin(){
             </button>
          </div>
          <div className="flex-none">
-            <button className="btn btn-ghost" onClick={redirectToFeed}>
+            <button className="btn btn-ghost" onClick={redirectToProfile}>
                 <div className="avatar flex-row items-center">
                     <span className="text-lg">
                         {username}

@@ -7,7 +7,7 @@ function Vote(props){
                 <span className="text-grey-400 ml-2">{post.upvotes} </span>
             </button>
             <button className="btn btn-outline opacity-75 hover:opacity-100 ml-5 hover:text-white">Downdoot
-                <span className=" text-grey-400 ml-2">{post.upvotes} </span>
+                <span className=" text-grey-400 ml-2">{post.downvotes} </span>
             </button>
         </div>
     )

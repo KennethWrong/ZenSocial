@@ -12,8 +12,9 @@ def create_response(message='',status_code=200, mimetype='application/json'):
                 temp_json['title'] = x[1]
                 temp_json['content'] = x[2]
                 temp_json['upvotes'] = x[3]
-                temp_json['date'] = x[4]
-                temp_json['user_id'] = x[5]
+                temp_json['downvotes'] = x[4]
+                temp_json['date'] = x[5]
+                temp_json['user_id'] = x[6]
                 json_return[i] = temp_json
             response = make_response(json_return)
 
@@ -57,7 +58,6 @@ def get_post_and_user_from_post_id(post_id):
 def get_picture_from_user_id(user_id):
     conn = sqlite3.connect('data/database.db')
     cur = conn.cursor()
-
     cur.execute("SELECT * FROM users WHERE user_id=?", (user_id,))
     res = cur.fetchall()
     res = res[0]
@@ -78,6 +78,7 @@ def get_limited_posts_for_feed(id):
     cur = conn.cursor()
     cur.execute(f"SELECT * FROM posts ORDER BY post_id DESC LIMIT 5 OFFSET {offset}")
     res = cur.fetchall()
+    print(res)
     conn.close()
     return res
 
@@ -94,10 +95,11 @@ def insert_new_post(title,content,user_id):
     conn = sqlite3.connect('data/database.db')
     print(title,content,user_id)
     upvotes = 0
+    downvotes = 0
     current_utc = datetime.datetime.utcnow().strftime('%Y-%m-%dT%H:%M:%S.%fZ')
     cur = conn.cursor()
-    cur.execute("INSERT INTO posts (post_title, post_content, upvotes, date, user_id) VALUES (?,?,?,?,?)",
-                (str(title), str(content), upvotes,str(current_utc), user_id))
+    cur.execute("INSERT INTO posts (post_title, post_content, upvotes, downvotes, date, user_id) VALUES (?,?,?,?,?)",
+                (str(title), str(content), upvotes, downvotes,str(current_utc), user_id))
     new_id = cur.lastrowid
     conn.commit()
     conn.close()
@@ -110,8 +112,9 @@ def generate_dict_for_post(res):
         'title': res[1],
         'content': res[2],
         'upvotes': res[3],
-        'date' : res[4],
-        'user_id':res[5]
+        'downvotes':res[4],
+        'date' : res[5],
+        'user_id':res[6]
     }
 
     return obj
