@@ -82,7 +82,7 @@ def get_limited_posts_for_feed(id):
     conn.close()
     return res
 
-def get_limited_posts_for_profile(id, user_id):
+def get_limited_posts_for_profile(user_id, id):
     conn = sqlite3.connect('data/database.db')
     offset = 5*(int(id) - 1)
     cur = conn.cursor()
@@ -127,7 +127,7 @@ def generate_dict_for_user(res):
         }   
     return obj
 
-def delete_user(user_id):
+def delete_user_by_user_id(user_id):
     conn = sqlite3.connect('data/database.db')
     cur = conn.cursor()
     cur.execute(f"SELECT * FROM users WHERE user_id=?", (user_id))

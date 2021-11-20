@@ -101,7 +101,11 @@ def send_feed(page):
     response = api_helper.create_response(res,200)
     return response
 
-
+@app.route('/profile/<user_id>/<int:page>',methods=['GET'])
+def send_profile(user_id, page):
+    res = api_helper.get_limited_posts_for_profile(user_id, page)
+    response = api_helper.create_response(res,200)
+    return response
 
 @app.route('/post/create_post', methods=["POST"])
 def create_new_post():
@@ -136,6 +140,11 @@ def get_user_picture_by_user_id(user_id):
 @app.route('/users/<user_id>', methods=["GET"])
 def get_user_info_by_user_id(user_id):
     user_info = api_helper.get_user_info_by_user_id(user_id)
+    return api_helper.create_response(user_info,200)
+
+@app.route('/delete/<user_id>', methods=["GET"])
+def delete_user_by_user_id(user_id):
+    user_info = api_helper.delete_user_info_by_user_id(user_id)
     return api_helper.create_response(user_info,200)
 
 if __name__ == '__main__':
