@@ -142,10 +142,23 @@ def get_user_info_by_user_id(user_id):
     user_info = api_helper.get_user_info_by_user_id(user_id)
     return api_helper.create_response(user_info,200)
 
-@app.route('/delete/<user_id>', methods=["GET"])
+@app.route('/delete/profile/<user_id>', methods=["GET"])
 def delete_user_by_user_id(user_id):
-    user_info = api_helper.delete_user_info_by_user_id(user_id)
-    return api_helper.create_response(user_info,200)
+    user_info = api_helper.delete_user_by_user_id(user_id)
+    return api_helper.create_response()
+
+@app.route('/user/<user_id>/password/change',methods=['PUT'])
+def change_user_password_by_user_id(user_id):
+    content = request.json
+    p1 = content['p1']
+    p2 = content['p2']
+    if p1 != p2:
+        return api_helper.create_response('Passwords do not match',400)
+    elif len(p1) <3 or len(p2) <3:
+        return api_helper.create_response('Password should be greater than 3 characters',400)
+    
+    changed_password = api_helper.change_user_password_by_user_id(user_id,p1)
+    return api_helper.create_response(changed_password)
 
 if __name__ == '__main__':
     app.run(debug=True)

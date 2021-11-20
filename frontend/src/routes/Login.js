@@ -3,6 +3,7 @@ import axios from 'axios'
 import {useHistory} from 'react-router-dom'
 import ErrorMessage from '../components/ErrorMessage'
 import SelectAvatar from '../components/SelectAvatar'
+import Carousel from '../components/Carousel'
 
 function Login(){
     const [greetingsH1, setGreetingH1] = useState('Welcome to ZenSocial')
@@ -95,7 +96,6 @@ function Login(){
     }
     //For selection of avatar
     const handleClickEvent = (pid) => {
-        console.log(pid)
         setPictureId(pid)
     }
 
@@ -142,6 +142,7 @@ function Login(){
             </div>
             </div>
         </div>
+        <Carousel />
 </div>
     )
 }

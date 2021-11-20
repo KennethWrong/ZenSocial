@@ -86,8 +86,9 @@ def get_limited_posts_for_profile(user_id, id):
     conn = sqlite3.connect('data/database.db')
     offset = 5*(int(id) - 1)
     cur = conn.cursor()
-    cur.execute(f"SELECT * FROM posts WHERE user_id=? ORDER BY post_id DESC LIMIT 5 OFFSET {offset}", (user_id))
+    cur.execute(f"SELECT * FROM posts WHERE user_id=? ORDER BY post_id DESC LIMIT 5 OFFSET {offset}",[str(user_id)])
     res = cur.fetchall()
+    print(res)
     conn.close()
     return res
 
@@ -98,7 +99,7 @@ def insert_new_post(title,content,user_id):
     downvotes = 0
     current_utc = datetime.datetime.utcnow().strftime('%Y-%m-%dT%H:%M:%S.%fZ')
     cur = conn.cursor()
-    cur.execute("INSERT INTO posts (post_title, post_content, upvotes, downvotes, date, user_id) VALUES (?,?,?,?,?)",
+    cur.execute("INSERT INTO posts (post_title, post_content, upvotes, downvotes, date, user_id) VALUES (?,?,?,?,?,?)",
                 (str(title), str(content), upvotes, downvotes,str(current_utc), user_id))
     new_id = cur.lastrowid
     conn.commit()
@@ -130,8 +131,22 @@ def generate_dict_for_user(res):
 def delete_user_by_user_id(user_id):
     conn = sqlite3.connect('data/database.db')
     cur = conn.cursor()
-    cur.execute(f"SELECT * FROM users WHERE user_id=?", (user_id))
+    cur.execute(f"SELECT * FROM users WHERE user_id=?", (user_id,))
+    conn.commit()
     res = cur.fetchall()
-    cur.execute(f"DELETE FROM users WHERE user_id=?", (user_id))
+    cur.execute(f"DELETE FROM users WHERE user_id=?", (user_id,))
+    conn.commit()
     conn.close()
     return res
+
+def change_user_password_by_user_id(user_id,password):
+    sql = '''UPDATE users
+             SET password = ?
+             WHERE user_id = ?'''
+
+    conn = sqlite3.connect('data/database.db')
+    cur = conn.cursor()
+    cur.execute(sql,(password,user_id))
+    conn.commit()
+    conn.close()
+    return 'Password has been successfully updated'

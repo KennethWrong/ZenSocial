@@ -3,16 +3,20 @@ import Pagination from '../components/Pagination'
 import {useEffect, useState} from 'react'
 import axios from 'axios'
 
-function Feed(){
+function Feed(props){
 
     const [page, setPage] = useState(1)
     const [data, setData] = useState([])
     const [max, setMax] = useState(false)
     const [min, setMin] = useState(true)
+    let feed_url = 'http://localhost:5000/feed/'
+    if(props.feed_url){
+        feed_url = props.feed_url
+    }
 
 
     useEffect(() => {
-        axios.get(`http://localhost:5000/feed/${page}`)
+        axios.get(`${feed_url}${page}`)
         .then((res) => {
             let json_list = Object.values(res.data)
             if(json_list.length < 5){
