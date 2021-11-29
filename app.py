@@ -127,6 +127,25 @@ def get_post_by_id(post_id):
     response.mimetype = 'application/json'
     return response
 
+
+@app.route('/upvote/<user_id>/<post_id>', methods=['POST'])
+def upvote_post(user_id, post_id):
+    api_helper.upvote(user_id, post_id)
+    response = make_response('success')
+    response.status_code = 200
+    response.mimetype = 'application/json'
+    return response
+
+
+@app.route('/downvote/<user_id>/<post_id>', methods=['POST'])
+def downvote_post(user_id, post_id):
+    api_helper.downvote(user_id, post_id)
+    response = make_response('success')
+    response.status_code = 200
+    response.mimetype = 'application/json'
+    return response
+
+
 @app.route('/assets/picture/allpicture/<number>', methods=["GET"])
 def get_specific_pictures(number):
     return send_file(f"./assets/{number}.png", mimetype='image')
