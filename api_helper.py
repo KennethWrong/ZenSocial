@@ -170,7 +170,7 @@ def generate_dict_for_user(res):
 def upvote(user_id, post_id):
     conn = sqlite3.connect('data/database.db')
     cur = conn.cursor()
-    cur.execute("SELECT upvotes, downvotes FROM posts WHERE post_id=?", (post_id,))
+    cur.execute(f"SELECT upvotes, downvotes FROM posts WHERE post_id=?", (post_id,))
     vote_info = cur.fetchall()
     vote_info = vote_info[0]
 
@@ -186,7 +186,7 @@ def upvote(user_id, post_id):
         upvotes.append(user_id)
     
     #update the upvotes & downvotes columns from the post
-    cur.execute("UPDATE posts SET upvotes = ?, downvotes = ? WHERE post_id=?", (str(upvotes), str(downvotes), post_id,))
+    cur.execute(f"UPDATE posts SET upvotes = ?, downvotes = ? WHERE post_id=?", (str(upvotes), str(downvotes), post_id,))
     conn.commit()
     conn.close()
 
@@ -196,7 +196,7 @@ def upvote(user_id, post_id):
 def downvote(user_id, post_id):
     conn = sqlite3.connect('data/database.db')
     cur = conn.cursor()
-    cur.execute("SELECT upvotes, downvotes FROM posts WHERE post_id=?", (post_id,))
+    cur.execute(f"SELECT upvotes, downvotes FROM posts WHERE post_id=?", (post_id,))
     vote_info = cur.fetchall()
     vote_info = vote_info[0]
 
@@ -212,7 +212,7 @@ def downvote(user_id, post_id):
         downvotes.append(user_id)
 
     #update the upvotes & downvotes columns from the post
-    cur.execute("UPDATE posts SET upvotes = ?, downvotes = ? WHERE post_id=?", (str(upvotes), str(downvotes), post_id,))
+    cur.execute(f"UPDATE posts SET upvotes = ?, downvotes = ? WHERE post_id=?", (str(upvotes), str(downvotes), post_id,))
     conn.commit()
     conn.close()
 
@@ -223,9 +223,10 @@ def delete_user_by_user_id(user_id):
     conn = sqlite3.connect('data/database.db')
     cur = conn.cursor()
     cur.execute(f"SELECT * FROM users WHERE user_id=?", (user_id,))
-    conn.commit()
     res = cur.fetchall()
     cur.execute(f"DELETE FROM users WHERE user_id=?", (user_id,))
+    conn.commit()
+    cur.execute(f"DELETE FROM posts WHERE user_id=?", (user_id,))
     conn.commit()
     conn.close()
     return res
