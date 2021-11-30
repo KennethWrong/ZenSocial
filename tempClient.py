@@ -19,7 +19,7 @@ def cleanString(string):
 
     return x
 
-ups = ['1', '1234']
+ups = ['1', '1234-555']
 downs = []
 
 print('ups', ups)

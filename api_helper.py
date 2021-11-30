@@ -3,7 +3,7 @@ import sqlite3
 import datetime
 
 
-def create_response(message='', status_code=200, mimetype='application/json'):
+def create_response(message='', status_code=200, user_id='1', mimetype='application/json'):
 
     if isinstance(message, list):
         json_return = {}
@@ -14,6 +14,8 @@ def create_response(message='', status_code=200, mimetype='application/json'):
             temp_json['content'] = x[2]
             temp_json['upvotes'] = len(clean_string(x[3]))
             temp_json['downvotes'] = len(clean_string(x[4]))
+            # -1 for dislike, 0 for nothing, 1 for like (only used for initial load)
+            temp_json['vote'] = get_prev_vote(clean_string(x[3]),clean_string(x[4]),user_id)
             temp_json['date'] = x[5]
             temp_json['user_id'] = x[6]
             json_return[i] = temp_json
@@ -33,6 +35,18 @@ def create_response(message='', status_code=200, mimetype='application/json'):
     return response
 
 
+
+ # -1 for dislike, 0 for nothing, 1 for like (only used for initial load)
+def get_prev_vote(upList, downList, voter_id):
+
+    if voter_id in upList:
+        return 1
+    elif voter_id in downList:
+        return -1
+    else:
+        return 0
+
+
 def get_post_from_post_id(post_id):
     conn = sqlite3.connect('data/database.db')
     cur = conn.cursor()
@@ -43,7 +57,7 @@ def get_post_from_post_id(post_id):
     return res
 
 
-def get_post_and_user_from_post_id(post_id):
+def get_post_and_user_from_post_id(user_id, post_id):
     conn = sqlite3.connect('data/database.db')
     cur = conn.cursor()
     cur.execute("SELECT * FROM posts WHERE post_id=?", (post_id,))
@@ -51,7 +65,7 @@ def get_post_and_user_from_post_id(post_id):
     post_info = post_info[0]
     user_info = get_user_info_by_user_id(post_info[-1])
 
-    post_dic = generate_dict_for_post(post_info)
+    post_dic = generate_dict_for_post(user_id, post_info)
     user_dic = generate_dict_for_user(user_info)
     obj = dict(list(post_dic.items()) + list(user_dic.items()))
 
@@ -105,8 +119,8 @@ def get_limited_posts_for_profile(user_id, id):
 def insert_new_post(title, content, user_id):
     conn = sqlite3.connect('data/database.db')
     print(title, content, user_id)
-    upvotes = ['']
-    downvotes = ['']
+    upvotes = []
+    downvotes = []
     current_utc = datetime.datetime.utcnow().strftime('%Y-%m-%dT%H:%M:%S.%fZ')
     cur = conn.cursor()
     cur.execute("INSERT INTO posts (post_title, post_content, upvotes, downvotes, date, user_id) VALUES (?,?,?,?,?,?)",
@@ -121,11 +135,7 @@ def insert_new_post(title, content, user_id):
 def clean_string(string):
     x = string.replace('[', '').replace(']', '').replace('\'', '').replace('\"', '').replace(' ', '')
 
-    print('cleaned', x)
-
     x = x.split(',')
-
-    print('split', x)
 
     if '' in x:
         x.remove('')
@@ -133,13 +143,14 @@ def clean_string(string):
     return x
 
 
-def generate_dict_for_post(res):
+def generate_dict_for_post(user_id, res):
     obj = {
         'post_id': res[0],
         'title': res[1],
         'content': res[2],
         'upvotes': len(clean_string(res[3])),
         'downvotes': len(clean_string(res[4])),
+        'vote' : get_prev_vote(clean_string(res[3]),clean_string(res[4]),user_id),
         'date': res[5],
         'user_id': res[6]
     }
@@ -175,6 +186,9 @@ def upvote(user_id, post_id):
         upvotes.append(user_id)
     
     #update the upvotes & downvotes columns from the post
+    cur.execute("UPDATE posts SET upvotes = ?, downvotes = ? WHERE post_id=?", (str(upvotes), str(downvotes), post_id,))
+    conn.commit()
+    conn.close()
 
     return
 
@@ -198,8 +212,11 @@ def downvote(user_id, post_id):
         downvotes.append(user_id)
 
     #update the upvotes & downvotes columns from the post
+    cur.execute("UPDATE posts SET upvotes = ?, downvotes = ? WHERE post_id=?", (str(upvotes), str(downvotes), post_id,))
+    conn.commit()
+    conn.close()
 
-    return 1
+    return
 
 
 def delete_user_by_user_id(user_id):

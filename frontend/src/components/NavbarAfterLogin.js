@@ -16,7 +16,7 @@ function NavbarAfterLogin(){
         .then(res => {
             setUsername(res.data['username'])
         })
-    },[username])
+    },[user_id, username])
 
 
     const redirectToCreate = () => {

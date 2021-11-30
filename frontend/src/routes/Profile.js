@@ -23,7 +23,7 @@ function Profile(props){
             setUser(obj)
         }
         getUserInformation()
-    },[])
+    },[user_id])
 
     const deleteProfile = async() =>{
         if(window.confirm('Do you really want to delete your profile? \nAll your previous posts will be deleted along with your account.')){

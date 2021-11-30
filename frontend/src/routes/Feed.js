@@ -1,6 +1,7 @@
 import Card from '../components/Card'
 import Pagination from '../components/Pagination'
 import {useEffect, useState} from 'react'
+import { useParams } from 'react-router'
 import axios from 'axios'
 
 function Feed(props){
@@ -9,7 +10,8 @@ function Feed(props){
     const [data, setData] = useState([])
     const [max, setMax] = useState(false)
     const [min, setMin] = useState(true)
-    let feed_url = 'http://localhost:5000/feed/'
+    let user_id = useParams()['user_id']
+    let feed_url = `http://localhost:5000/feed/${user_id}/`
     if(props.feed_url){
         feed_url = props.feed_url
     }
@@ -32,7 +34,7 @@ function Feed(props){
                 setMax(true)
             }
         })
-    },[page])
+    },[feed_url, max, page])
 
     const handlePageChange = (val) => {
         if(val === 0){

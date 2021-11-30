@@ -10,6 +10,7 @@ function Post(props){
     const [post, setPost] = useState('')
     const [user, setUser] = useState('')
     let post_id = props.post_id
+    let user_id = props.user_id
     let post_date = new Date(post.date)
     let time_diff = get_time_difference(post_date)
     let history = useHistory()
@@ -17,7 +18,7 @@ function Post(props){
     useEffect(()=>{
         async function fetchData(){
             if(post_id){
-                let res_post = await axios.get(`http://localhost:5000/post/${post_id}`)
+                let res_post = await axios.get(`http://localhost:5000/post/${user_id}/${post_id}`)
                 let content = res_post['data']
                 setPost({
                     'content':content['content'],
@@ -36,7 +37,7 @@ function Post(props){
             }
         }
         fetchData()
-    },[])
+    },[post_id, user_id])
 
     return(
         <div className="flex items-center w-full px-4 py-10 bg-cover card bg-base-200 min-h-screen" style={{backgroundImage:"url(&quot;https://picsum.photos/id/314/1000/300&quot)"}}>

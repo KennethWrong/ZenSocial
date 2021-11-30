@@ -24,7 +24,7 @@ CREATE TRIGGER aft_del
 AFTER DELETE ON users
 BEGIN
     DELETE FROM posts
-    WHERE user_i22d = old.user_id;
+    WHERE user_id = old.user_id;
 END;
 
 INSERT INTO users (username, password, user_id, picture_id) 
@@ -34,6 +34,17 @@ VALUES
     ('aaa','aaa','12345432428-1234-5678-1234-567812345333',3),
     ('joe','1234','12345141342148-1234-5678-1234-5345333',6)
 ;   
+
+INSERT INTO posts (post_title, post_content, upvotes, downvotes, date, user_id) VALUES 
+    (
+        "multivote test",
+        " ",
+        '[38ce446c-664e-4544-850f-ea6704fc9f88, 33ce446c-664e-4544-850f-ea6704fc9f88, 38ce446c-364e-4544-850f-ea6704fc9f88]',
+        '[38ce446c-664e-4544-850f-ea6704fc3f88]',
+        '2011-11-15T13:20:20.123Z',
+        '38ce446c-664e-4544-850f-ea6704fc9f88'
+    )
+;
 
 INSERT INTO posts (post_title, post_content, upvotes, downvotes, date, user_id) VALUES 
     (
