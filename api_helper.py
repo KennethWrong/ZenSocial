@@ -1,6 +1,7 @@
 from flask import request, json, jsonify, make_response, send_from_directory
 import sqlite3
 import datetime
+import pandas as pd
 
 
 def create_response(message='', status_code=200, user_id='1', mimetype='application/json'):
@@ -263,3 +264,9 @@ def change_user_password_by_user_id(user_id, password):
     conn.commit()
     conn.close()
     return 'Password has been successfully updated'
+
+def convert_database_to_tsv(table_name):
+    conn = sqlite3.connect('data/database.db')
+    query = 'SELECT * FROM {}'.format(table_name)
+    df = pd.read_sql_query(query,conn)
+    return df

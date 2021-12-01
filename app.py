@@ -4,6 +4,7 @@ from flask import Flask, request, json, jsonify, send_from_directory, send_file
 from flask.helpers import make_response
 from flask_cors import CORS  # comment this on deployment
 import api_helper
+import os
 
 app = Flask(__name__, static_url_path='', static_folder='frontend/build')
 CORS(app)  # comment this on deployment
@@ -186,6 +187,15 @@ def change_user_password_by_user_id(user_id):
     changed_password = api_helper.change_user_password_by_user_id(user_id, p1)
     return api_helper.create_response(changed_password)
 
+
+@app.route('/TSVdump/<table_name>', methods=['GET'])
+def get_tsv_dump(table_name):
+    df = api_helper.convert_database_to_tsv(table_name)
+    cwd = os.getcwd()
+    path = os.path.join(cwd,'frontend','public','tsv',f'{table_name}.tsv')
+    df.to_csv(path, sep='\t')
+
+    return api_helper.create_response()
 
 if __name__ == '__main__':
     app.run(debug=True)

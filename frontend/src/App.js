@@ -7,6 +7,7 @@ import CreatePost from './routes/CreatePost'
 import ViewPost from './routes/ViewPost'
 import Footer from './components/Footer'
 import Profile from './routes/Profile'
+import GetTsv from './routes/GetTsv'
 
 function App() {
   return (
@@ -28,7 +29,11 @@ function App() {
               <NavbarAfterLogin />
               <Profile />
             </Route>
-            <Route path="/">
+            <Route path='/getTSVdump'>
+              <Navbar></Navbar>
+              <GetTsv />
+            </Route>
+            <Route path="/" exact>
               <Navbar />
               <Login />
               <Footer />

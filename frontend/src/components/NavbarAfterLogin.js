@@ -40,14 +40,14 @@ function NavbarAfterLogin(){
  
         <div className="flex-1 px-2 mx-2">
             <span className="font-bold text-2xl">
-                <h1 className= "cursor-pointer hover:bg-gray-800 p-2  rounded-box hover:bg-opacity-25" onClick={redirectToLogin}>ZenSocial </h1>
+                <h1 className= "cursor-pointer hover:bg-gray-800 p-2  rounded-box hover:bg-opacity-25" onClick={redirectToFeed}>ZenSocial </h1>
             </span>
         </div> 
         <div className="flex-none">
-            <button className="btn btn-ghost" onClick={redirectToFeed}>
+            <button className="btn btn-ghost" onClick={redirectToLogin}>
                 <div className="items-center mt-1">
                     <span className="text-lg items-center">
-                        Home
+                        Logout
                     </span>
                 </div>
             </button>
