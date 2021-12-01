@@ -98,7 +98,7 @@ def get_limited_posts_for_feed(id):
     offset = 5*(int(id) - 1)
     cur = conn.cursor()
     cur.execute(
-        f"SELECT * FROM posts ORDER BY post_id DESC LIMIT 5 OFFSET {offset}")
+        f"SELECT * FROM posts ORDER BY post_id DESC LIMIT 5 OFFSET {offset}") # WHERE user_id !=?
     res = cur.fetchall()
     print(res)
     conn.close()

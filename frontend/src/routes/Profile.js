@@ -27,7 +27,7 @@ function Profile(props){
 
     const deleteProfile = async() =>{
         if(window.confirm('Do you really want to delete your profile? \nAll your previous posts will be deleted along with your account.')){
-            let res = await axios.get(`http://localhost:5000/delete/profile/${user_id}`)
+            let res = await axios.delete(`http://localhost:5000/delete/profile/${user_id}`)
             setDeleted(true)
             setTimeout(()=>{
                 setText('[:DELETED:]')
