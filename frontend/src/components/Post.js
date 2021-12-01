@@ -9,6 +9,7 @@ import ScrollToTopMount from '../components/ScrollToTopMount'
 function Post(props){
     const [post, setPost] = useState('')
     const [user, setUser] = useState('')
+    const [vote, setVote] = useState('')
     let post_id = props.post_id
     let user_id = props.user_id
     let post_date = new Date(post.date)
@@ -20,6 +21,7 @@ function Post(props){
             if(post_id){
                 let res_post = await axios.get(`http://localhost:5000/post/${user_id}/${post_id}`)
                 let content = res_post['data']
+                console.log(content)
                 setPost({
                     'content':content['content'],
                     'date':content['date'],
@@ -27,17 +29,26 @@ function Post(props){
                     'title':content['title'],
                     'upvotes':content['upvotes'],
                     'downvotes':content['downvotes'],
-                    'user_id':content['user_id']
+                    'vote':content['vote']
                 })
                 setUser({
                     'username':content['username'],
                     'picture_id':content['picture_id'],
-                    'user_id':content['user_id']
+                    'user_id':content['user_id'],
+                })
+                setVote({
+                    'vote':content['vote'],
+                    'upvotes':content['upvotes'],
+                    'downvotes':content['downvotes'],
                 })
             }
         }
         fetchData()
     },[post_id, user_id])
+
+    const handleVoteChange = (obj) => {
+        setVote(obj)
+    }
 
     return(
         <div className="flex items-center w-full px-4 py-10 bg-cover card bg-base-200 min-h-screen" style={{backgroundImage:"url(&quot;https://picsum.photos/id/314/1000/300&quot)"}}>
@@ -53,7 +64,7 @@ function Post(props){
                 <p className="text-2xl max-w-4xl mt-2">{post.content}</p> 
                 <p className='mt-4 text-gray-400'>Posted {time_diff}</p>
                 <div className="card-actions mt-12">
-                    <Vote post={post}/>
+                    <Vote post={post} vote={vote} handleVoteChange={handleVoteChange}/>
                 </div>
                 </div>
             </div>

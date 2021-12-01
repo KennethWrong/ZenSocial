@@ -15,7 +15,6 @@ CORS(app)  # comment this on deployment
 
 # For users to register
 
-
 @app.route('/register', methods=['POST'])
 def register():
 
@@ -129,27 +128,26 @@ def create_new_post():
     response = api_helper.create_response(res)
     return response
 
-
+#Get post by post_id and user_id
 @app.route('/post/<user_id>/<post_id>', methods=['GET'])
 def get_post_by_id(user_id, post_id):
     post = api_helper.get_post_and_user_from_post_id(user_id, post_id)
-    print(post)
     response = make_response(post)
     response.status_code = 200
     response.mimetype = 'application/json'
     return response
 
-
+#For upvoting
 @app.route('/upvote/<user_id>/<post_id>', methods=['PUT'])
 def upvote_post(user_id, post_id):
-    api_helper.upvote(user_id, post_id)
-    return api_helper.create_response('Success', 200)
+    return_obj = api_helper.upvote(user_id, post_id)
+    return api_helper.create_response(jsonify(return_obj), 200)
 
-
+#For downvoting
 @app.route('/downvote/<user_id>/<post_id>', methods=['PUT'])
 def downvote_post(user_id, post_id):
-    api_helper.downvote(user_id, post_id)
-    return api_helper.create_response('Success', 200)
+    return_obj = api_helper.downvote(user_id, post_id)
+    return api_helper.create_response(jsonify(return_obj), 200)
 
 
 @app.route('/assets/picture/allpicture/<number>', methods=["GET"])

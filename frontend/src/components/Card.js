@@ -2,6 +2,7 @@ import Avatar from './Avatar'
 import {get_time_difference} from '../helpers/dateHelper'
 import { useHistory, useParams } from 'react-router'
 import Vote from './Vote'
+import { useEffect, useState } from 'react'
 
 function Card(props){
     const post = props.post
@@ -12,6 +13,13 @@ function Card(props){
     let post_id = post.id
     date = new Date(date);
     let time_diff = get_time_difference(date)
+    const [vote, setVote] = useState('')
+
+    useEffect(() => {
+        setVote({'upvotes':post.upvotes,
+                'downvotes':post.downvotes,
+                'vote':post.vote})
+    },[])
 
     const history = useHistory()
     const current_user_id = useParams()['user_id']
@@ -27,6 +35,10 @@ function Card(props){
         history.push(`/${current_user_id}/posts/${post_id}`)
     }
 
+    const handleVoteChange = (obj) => {
+        setVote(obj)
+    }
+
     return(
         <div className="card lg:card-side bordered cursor-pointer hover:bg-gray-300">
             <Avatar user_id={post_user_id}  />
@@ -35,7 +47,7 @@ function Card(props){
                 <p className=" max-w-3xl text-xl text-gray-500">{content}</p> 
                 <div className="card-actions mt-2">
                 <button className="btn btn-primary" onClick={redirectToPostView}>Read more</button> 
-                <Vote post={post}/>
+                <Vote post={post} vote={vote} handleVoteChange={handleVoteChange}/>
                 </div>
                 <p className='mt-2 text-gray-400'>{time_diff}</p>
             </div>

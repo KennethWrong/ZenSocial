@@ -49,7 +49,7 @@ INSERT INTO posts (post_title, post_content, upvotes, downvotes, date, user_id) 
     (
         "As you get older, what's something that becomes increasingly annoying?",
         " ",
-        '[1, 2, 3]',
+        '[12345141342148-1234-5678-1234-5345333, 12345141342148-1234-5678-1234-5345333]',
         '[]',
         '2011-11-15T13:20:20.123Z',
         '12345678-1234-5678-1234-567812345678'

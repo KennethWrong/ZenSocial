@@ -78,6 +78,7 @@ def get_picture_from_user_id(user_id):
     cur = conn.cursor()
     cur.execute("SELECT * FROM users WHERE user_id=?", (user_id,))
     res = cur.fetchall()
+    print(res)
     res = res[0]
     picture_id = res[-1]
     return picture_id
@@ -166,14 +167,14 @@ def generate_dict_for_user(res):
     }
     return obj
 
-
+#Handle upvote logic
 def upvote(user_id, post_id):
     conn = sqlite3.connect('data/database.db')
     cur = conn.cursor()
     cur.execute(f"SELECT upvotes, downvotes FROM posts WHERE post_id=?", (post_id,))
     vote_info = cur.fetchall()
     vote_info = vote_info[0]
-
+    re_obj = 0
     upvotes = clean_string(vote_info[0])
     downvotes = clean_string(vote_info[1])
 
@@ -182,24 +183,34 @@ def upvote(user_id, post_id):
     elif user_id in downvotes:
         downvotes.remove(user_id)
         upvotes.append(user_id)
+        re_obj = 1
     else:
         upvotes.append(user_id)
+        re_obj = 1
     
     #update the upvotes & downvotes columns from the post
     cur.execute(f"UPDATE posts SET upvotes = ?, downvotes = ? WHERE post_id=?", (str(upvotes), str(downvotes), post_id,))
     conn.commit()
     conn.close()
 
-    return
+    u_count = len(upvotes)
+    d_count = len(downvotes)
+    return_obj = {
+        'upvotes':u_count,
+        'downvotes':d_count,
+        'vote':re_obj
+    }
 
+    return return_obj
 
+#Handle downvote logic
 def downvote(user_id, post_id):
     conn = sqlite3.connect('data/database.db')
     cur = conn.cursor()
     cur.execute(f"SELECT upvotes, downvotes FROM posts WHERE post_id=?", (post_id,))
     vote_info = cur.fetchall()
     vote_info = vote_info[0]
-
+    re_obj = 0
     upvotes = clean_string(vote_info[0])
     downvotes = clean_string(vote_info[1])
 
@@ -208,15 +219,24 @@ def downvote(user_id, post_id):
     elif user_id in upvotes:
         upvotes.remove(user_id)
         downvotes.append(user_id)
+        re_obj = -1
     else:
         downvotes.append(user_id)
+        re_obj = -1
 
     #update the upvotes & downvotes columns from the post
     cur.execute(f"UPDATE posts SET upvotes = ?, downvotes = ? WHERE post_id=?", (str(upvotes), str(downvotes), post_id,))
     conn.commit()
     conn.close()
-
-    return
+    
+    u_count = len(upvotes)
+    d_count = len(downvotes)
+    return_obj = {
+        'upvotes':u_count,
+        'downvotes':d_count,
+        'vote':re_obj
+    }
+    return return_obj
 
 
 def delete_user_by_user_id(user_id):
