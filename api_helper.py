@@ -16,7 +16,8 @@ def create_response(message='', status_code=200, user_id='1', mimetype='applicat
             temp_json['upvotes'] = len(clean_string(x[3]))
             temp_json['downvotes'] = len(clean_string(x[4]))
             # -1 for dislike, 0 for nothing, 1 for like (only used for initial load)
-            temp_json['vote'] = get_prev_vote(clean_string(x[3]),clean_string(x[4]),user_id)
+            temp_json['vote'] = get_prev_vote(
+                clean_string(x[3]), clean_string(x[4]), user_id)
             temp_json['date'] = x[5]
             temp_json['user_id'] = x[6]
             json_return[i] = temp_json
@@ -35,9 +36,9 @@ def create_response(message='', status_code=200, user_id='1', mimetype='applicat
     response.mimetype = mimetype
     return response
 
-
-
  # -1 for dislike, 0 for nothing, 1 for like (only used for initial load)
+
+
 def get_prev_vote(upList, downList, voter_id):
 
     if voter_id in upList:
@@ -73,7 +74,6 @@ def get_post_and_user_from_post_id(user_id, post_id):
     return obj
 
 
-
 def get_picture_from_user_id(user_id):
     conn = sqlite3.connect('data/database.db')
     cur = conn.cursor()
@@ -94,12 +94,12 @@ def get_user_info_by_user_id(user_id):
     return res[0]
 
 
-def get_limited_posts_for_feed(id):
+def get_limited_posts_for_feed(user_id, id):
     conn = sqlite3.connect('data/database.db')
     offset = 5*(int(id) - 1)
     cur = conn.cursor()
     cur.execute(
-        f"SELECT * FROM posts ORDER BY post_id DESC LIMIT 5 OFFSET {offset}") # WHERE user_id !=?
+        f"SELECT * FROM posts WHERE user_id<>? ORDER BY post_id DESC LIMIT 5 OFFSET {offset}", [str(user_id)])  # WHERE user_id !=?
     res = cur.fetchall()
     print(res)
     conn.close()
@@ -135,7 +135,8 @@ def insert_new_post(title, content, user_id):
 
 
 def clean_string(string):
-    x = string.replace('[', '').replace(']', '').replace('\'', '').replace('\"', '').replace(' ', '')
+    x = string.replace('[', '').replace(']', '').replace(
+        '\'', '').replace('\"', '').replace(' ', '')
 
     x = x.split(',')
 
@@ -152,7 +153,7 @@ def generate_dict_for_post(user_id, res):
         'content': res[2],
         'upvotes': len(clean_string(res[3])),
         'downvotes': len(clean_string(res[4])),
-        'vote' : get_prev_vote(clean_string(res[3]),clean_string(res[4]),user_id),
+        'vote': get_prev_vote(clean_string(res[3]), clean_string(res[4]), user_id),
         'date': res[5],
         'user_id': res[6]
     }
@@ -168,11 +169,14 @@ def generate_dict_for_user(res):
     }
     return obj
 
-#Handle upvote logic
+# Handle upvote logic
+
+
 def upvote(user_id, post_id):
     conn = sqlite3.connect('data/database.db')
     cur = conn.cursor()
-    cur.execute(f"SELECT upvotes, downvotes FROM posts WHERE post_id=?", (post_id,))
+    cur.execute(
+        f"SELECT upvotes, downvotes FROM posts WHERE post_id=?", (post_id,))
     vote_info = cur.fetchall()
     vote_info = vote_info[0]
     re_obj = 0
@@ -188,27 +192,31 @@ def upvote(user_id, post_id):
     else:
         upvotes.append(user_id)
         re_obj = 1
-    
-    #update the upvotes & downvotes columns from the post
-    cur.execute(f"UPDATE posts SET upvotes = ?, downvotes = ? WHERE post_id=?", (str(upvotes), str(downvotes), post_id,))
+
+    # update the upvotes & downvotes columns from the post
+    cur.execute(f"UPDATE posts SET upvotes = ?, downvotes = ? WHERE post_id=?", (str(
+        upvotes), str(downvotes), post_id,))
     conn.commit()
     conn.close()
 
     u_count = len(upvotes)
     d_count = len(downvotes)
     return_obj = {
-        'upvotes':u_count,
-        'downvotes':d_count,
-        'vote':re_obj
+        'upvotes': u_count,
+        'downvotes': d_count,
+        'vote': re_obj
     }
 
     return return_obj
 
-#Handle downvote logic
+# Handle downvote logic
+
+
 def downvote(user_id, post_id):
     conn = sqlite3.connect('data/database.db')
     cur = conn.cursor()
-    cur.execute(f"SELECT upvotes, downvotes FROM posts WHERE post_id=?", (post_id,))
+    cur.execute(
+        f"SELECT upvotes, downvotes FROM posts WHERE post_id=?", (post_id,))
     vote_info = cur.fetchall()
     vote_info = vote_info[0]
     re_obj = 0
@@ -225,17 +233,18 @@ def downvote(user_id, post_id):
         downvotes.append(user_id)
         re_obj = -1
 
-    #update the upvotes & downvotes columns from the post
-    cur.execute(f"UPDATE posts SET upvotes = ?, downvotes = ? WHERE post_id=?", (str(upvotes), str(downvotes), post_id,))
+    # update the upvotes & downvotes columns from the post
+    cur.execute(f"UPDATE posts SET upvotes = ?, downvotes = ? WHERE post_id=?", (str(
+        upvotes), str(downvotes), post_id,))
     conn.commit()
     conn.close()
-    
+
     u_count = len(upvotes)
     d_count = len(downvotes)
     return_obj = {
-        'upvotes':u_count,
-        'downvotes':d_count,
-        'vote':re_obj
+        'upvotes': u_count,
+        'downvotes': d_count,
+        'vote': re_obj
     }
     return return_obj
 
@@ -265,8 +274,9 @@ def change_user_password_by_user_id(user_id, password):
     conn.close()
     return 'Password has been successfully updated'
 
+
 def convert_database_to_tsv(table_name):
     conn = sqlite3.connect('data/database.db')
     query = 'SELECT * FROM {}'.format(table_name)
-    df = pd.read_sql_query(query,conn)
+    df = pd.read_sql_query(query, conn)
     return df

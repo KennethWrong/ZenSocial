@@ -106,7 +106,7 @@ def login():
 
 @app.route('/feed/<user_id>/<int:page>', methods=['GET'])
 def send_feed(user_id, page):
-    res = api_helper.get_limited_posts_for_feed(page)
+    res = api_helper.get_limited_posts_for_feed(user_id, page)
     response = api_helper.create_response(res, 200, user_id)
     return response
 
