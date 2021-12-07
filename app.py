@@ -171,8 +171,12 @@ def get_user_info_by_user_id(user_id):
 @app.route('/delete/profile/<user_id>', methods=["DELETE"])
 def delete_user_by_user_id(user_id):
     user_info = api_helper.delete_user_by_user_id(user_id)
-    return api_helper.create_response(user_info, 200)
+    return make_response('successfully deleted',200)
 
+@app.route('/delete/post/<post_id>', methods=["DELETE"])
+def delete_post_by_user_id(post_id):
+    user_info = api_helper.delete_post_by_post_id(post_id)
+    return make_response('successfully deleted',200)
 
 @app.route('/user/<user_id>/password/change', methods=['PUT'])
 def change_user_password_by_user_id(user_id):

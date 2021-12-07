@@ -3,7 +3,7 @@ import Avatar from "./Avatar"
 import Vote from "./Vote"
 import {useState, useEffect} from 'react'
 import {get_time_difference} from '../helpers/dateHelper'
-import { useHistory } from "react-router"
+import { useHistory} from "react-router"
 import ScrollToTopMount from '../components/ScrollToTopMount'
 
 function Post(props){
@@ -21,7 +21,6 @@ function Post(props){
             if(post_id){
                 let res_post = await axios.get(`http://localhost:5000/post/${user_id}/${post_id}`)
                 let content = res_post['data']
-                console.log(content)
                 setPost({
                     'content':content['content'],
                     'date':content['date'],
@@ -64,7 +63,7 @@ function Post(props){
                 <p className="text-2xl max-w-4xl mt-2">{post.content}</p> 
                 <p className='mt-4 text-gray-400'>Posted {time_diff}</p>
                 <div className="card-actions mt-12">
-                    <Vote post={post} vote={vote} handleVoteChange={handleVoteChange}/>
+                    <Vote post={post} vote={vote} handleVoteChange={handleVoteChange} pid={user.user_id} cid={user_id}/>
                 </div>
                 </div>
             </div>

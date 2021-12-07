@@ -261,6 +261,16 @@ def delete_user_by_user_id(user_id):
     conn.close()
     return res
 
+def delete_post_by_post_id(post_id):
+    conn = sqlite3.connect('data/database.db')
+    cur = conn.cursor()
+    cur.execute(f"SELECT * FROM posts WHERE post_id=?", (post_id,))
+    res = cur.fetchall()
+    cur.execute(f"DELETE FROM posts WHERE post_id=?", (post_id,))
+    conn.commit()
+    conn.close()
+    return res
+
 
 def change_user_password_by_user_id(user_id, password):
     sql = '''UPDATE users

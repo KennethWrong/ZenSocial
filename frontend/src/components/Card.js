@@ -47,7 +47,7 @@ function Card(props){
                 <p className=" max-w-3xl text-xl text-gray-500">{content}</p> 
                 <div className="card-actions mt-2">
                 <button className="btn btn-primary" onClick={redirectToPostView}>Read more</button> 
-                <Vote post={post} vote={vote} handleVoteChange={handleVoteChange}/>
+                <Vote post={post} vote={vote} handleVoteChange={handleVoteChange} cid={current_user_id} pid={post_user_id}/>
                 </div>
                 <p className='mt-2 text-gray-400'>{time_diff}</p>
             </div>
