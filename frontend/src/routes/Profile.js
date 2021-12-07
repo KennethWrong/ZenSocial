@@ -27,7 +27,7 @@ function Profile(props){
 
     const deleteProfile = async() =>{
         if(window.confirm('Do you really want to delete your profile? \nAll your previous posts will be deleted along with your account.')){
-            let res = await axios.delete(`http://localhost:5000/delete/profile/${user_id}`)
+            await axios.delete(`http://localhost:5000/delete/profile/${user_id}`)
             setDeleted(true)
             setTimeout(()=>{
                 setText('[:DELETED:]')
@@ -45,7 +45,7 @@ function Profile(props){
                 <figure className=''>
                     {user['user_id']?
                     <img src={`http://localhost:5000/assets/picture/${user['user_id']}`} className=' object-cover h-48 w-full' alt='user_profile_pic'/>:
-                    <img src="https://www.freeiconspng.com/thumbs/load-icon-png/load-icon-png-8.png" className=' object-cover h-48 w-full' alt='loading picture'/>}
+                    <img src="https://www.freeiconspng.com/thumbs/load-icon-png/load-icon-png-8.png" className=' object-cover h-48 w-full' alt='loading icon'/>}
                 </figure> 
                 }
 

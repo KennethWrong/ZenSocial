@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { useParams, useHistory} from 'react-router'
+import { useParams} from 'react-router'
 import { useState} from 'react'
 import Upvote from './UpVote'
 import Downvote from './DownVote'
@@ -11,7 +11,6 @@ function Vote(props){
     let post_id = useParams()['post_id'] ?? post.id
     let upvote_url = `http://localhost:5000/upvote/${user_id}/${post_id}`
     let downvote_url = `http://localhost:5000/downvote/${user_id}/${post_id}`
-    let history = useHistory()
 
     const [loading, setLoading] = useState(false)
     const [deleteButtonText, setDeleteButtonText] = useState('Delete')
@@ -31,7 +30,7 @@ function Vote(props){
 
     const handleDeletePost = async() => {
         try{
-            let res = await axios.delete(`http://localhost:5000/delete/post/${post_id}`);
+            await axios.delete(`http://localhost:5000/delete/post/${post_id}`);
             setLoading(true)
 
             setTimeout(() => {
@@ -56,16 +55,14 @@ function Vote(props){
 
             <button onClick={handleUpvote} 
             className={`btn btn-md btn-ghost hover:bg-transparent text-lg`}>
-                <Upvote color={vote.vote==1?'orange':''}/>
-                <span className={`text-grey-400 ml-2 ${vote.vote==1?'text-yellow-600':''}`}>{vote.upvotes} </span>
+                <Upvote color={vote.vote===1?'orange':''}/>
+                <span className={`text-grey-400 ml-2 ${vote.vote===1?'text-yellow-600':''}`}>{vote.upvotes} </span>
             </button>
 
             <button onClick={handleDownvote} className={`btn btn-ghost hover:bg-transparent text-lg`}>
-                <Downvote color={vote.vote==-1?'blue':''} />
-                <span className={` text-grey-400 ml-2 ${vote.vote==-1?'text-blue-400':''} `}>{vote.downvotes} </span>
+                <Downvote color={vote.vote===-1?'blue':''} />
+                <span className={` text-grey-400 ml-2 ${vote.vote===-1?'text-blue-400':''} `}>{vote.downvotes} </span>
             </button>
-            {console.log(props.cid)}
-            {console.log(props.pid)}
             {props.cid === props.pid?
                 <button onClick={handleDeletePost} 
                 className={`btn btn-md btn-outline btn-secondary ${loading?'loading':""}`}

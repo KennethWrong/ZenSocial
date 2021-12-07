@@ -104,7 +104,7 @@ function Login(){
             return(
                 <div>
                 <SelectAvatar handleClickEvent={handleClickEvent}/> 
-                <img src={`http://localhost:5000/assets/picture/allpicture/${pictureId}`} className={` cursor-pointer max-w-xs max-h-20`} />
+                <img src={`http://localhost:5000/assets/picture/allpicture/${pictureId}`} className={` cursor-pointer max-w-xs max-h-20`} alt='chosen avatar'/>
                 </div>  
             )
         }

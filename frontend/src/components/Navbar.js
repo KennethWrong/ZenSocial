@@ -11,9 +11,7 @@ function Navbar(){
   </div> 
   <div className="flex-none hidden px-2 mx-2 lg:flex">
     <div className="flex items-stretch">
-      <Link to='/' className="btn btn-ghost btn-sm rounded-btn">Likes</Link>
-      <Link to="/" className="btn btn-ghost btn-sm rounded-btn"> Notifications </Link> 
-      <Link to="/" className="btn btn-ghost btn-sm rounded-btn"> Files </Link> 
+      <a href="https://github.com/KennethWrong/ZenSocial" className="btn btn-ghost btn-md text-lg rounded-btn">GitHub</a>
     </div>
   </div> 
   <div className="flex-none">

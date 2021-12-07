@@ -62,7 +62,7 @@ function EditProfile(props){
                     onChange={changeP1}/>
 
                     <input type="password" value={p2}placeholder="Retype new password" 
-                    className={`input input-bordered ${p1 && p2 && p1===p2?`input-success`:''} ${p1&&p2 && p1!=p2?'input-error':''}`} 
+                    className={`input input-bordered ${p1 && p2 && p1===p2?`input-success`:''} ${p1&&p2 && p1!==p2?'input-error':''}`} 
                     onChange={changeP2}/>
                     <div className="modal-action">
                         {!loading?

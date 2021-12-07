@@ -1,7 +1,6 @@
 
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
 import {useParams, useHistory}from "react-router-dom"
 
 
@@ -25,6 +24,7 @@ function NavbarAfterLogin(){
 
     const redirectToFeed = () => {
         history.push(`/feed/${user_id}`)
+        window.location.reload(false)
     }
 
     const redirectToLogin = () => {
@@ -68,7 +68,7 @@ function NavbarAfterLogin(){
                         {username}
                     </span>
                     <div className="rounded-full w-10 h-10 m-1 ml-4">
-                        <img src={`http://localhost:5000/assets/picture/${user_id}`} />
+                        <img src={`http://localhost:5000/assets/picture/${user_id}`} alt='user_profile_pic'/>
                     </div>
                 </div>
             </button>
